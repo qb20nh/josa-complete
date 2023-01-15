@@ -1,6 +1,6 @@
 {
   // Help: https://www.typescriptlang.org/tsconfig
-  "include": ["src/**/*.ts", "src/**/*.json"],
+  "include": ["src", "test"],
   "compilerOptions": {
     "target": "ES2019",
     "module": "commonjs",

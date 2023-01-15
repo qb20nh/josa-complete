@@ -3,7 +3,9 @@ const {
   get은는, get이가, get을를, get으로,
   get와과, get야아, get이여, get이나,
   get이다, get이였다, get이든, get이라,
-  get이란, get이랑, get이야, get이며
+  get이란, get이랑, get이야, get이며,
+
+  autofix
 } = require('./dist')
 const cases = require('jest-in-case')
 // eslint-enable no-undef
@@ -133,3 +135,9 @@ cases('suffixes of 디자인', opts => {
   { name: '디자인 + (이)여 is 이여', getter: get이여, val: '이여' },
   { name: '디자인 + (이)며 is 이며', getter: get이며, val: '이며' }
 ])
+
+describe('autofixer tests', () => {
+  test('normal texts', () => {
+    expect(autofix('Minecraft은(는) 현재 계정에서 사용할 수 없습니다.')).toBe('Minecraft는 현재 계정에서 사용할 수 없습니다.')
+  })
+})

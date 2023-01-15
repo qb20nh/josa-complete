@@ -4,6 +4,10 @@ import {
   alphabetWithPhoneticJongseong
 } from './josa.config.json'
 
+import { A, S } from './utils'
+
+import { autofix } from './autofixer'
+
 declare global {
   interface String {
     /**
@@ -37,18 +41,15 @@ declare global {
   }
 }
 
-const range = (min: number, max: number): number[] =>
-  [...Array(max - min + 1)].map((_, i) => min + i)
-
 const compatibilityJamoEntries = Object.fromEntries(
-  range('ㄱ'.charCodeAt(0), 'ㅎ'.charCodeAt(0))
+  A.range('ㄱ'.charCodeAt(0), 'ㅎ'.charCodeAt(0))
     .map((code) => String.fromCharCode(code))
     .map((a) => [a, a])
 )
 
 const jongseongMap: Record<string, string> = {
   ...alphabetWithPhoneticJongseong,
-  ...compatibilityJamoEntries,
+  ...compatibilityJamoEntries
 }
 
 const endWith = {
@@ -59,10 +60,10 @@ const endWith = {
       })
       .join('|')}`
   ),
-  punctuation: new RegExp(`[${punctuationsToIgnore}\\s]*$`),
+  punctuation: new RegExp(`[${punctuationsToIgnore}\\s]*$`)
 }
 
-const hasJohabChar = (word: string): boolean => word.normalize('NFC') !== word
+const hasJohabChar = (word: string): boolean => S.hasNFDComposable(word)
 const lastLetterOf = (word: string): string =>
   word
     .normalize('NFC')
@@ -76,7 +77,7 @@ const getJongseongOf = (letter: string): string | undefined =>
 const hasJongseong = (letter: string): boolean =>
   getJongseongOf(letter) !== undefined
 
-interface JosaCompleter {
+export interface JosaCompleter {
   /**
    * Takes a string and appends an appropriate suffix from {@link getSuffix}
    * @param word input word
@@ -116,6 +117,7 @@ export const createJosaFunction = (
   }
 }
 
+export const DEFAULT_JOSA_COMPLETERS: Record<string, JosaCompleter> = {}
 // TODO(qb20nh): Generate JSDoc comment for each case with usage example
 /**
  * @example
@@ -124,38 +126,39 @@ export const createJosaFunction = (
  *   (josa) => josa.filter(
  *     opt => !opt.usesCustomBranching
  *   ).map(({getterName, whenTrue, whenFalse}) =>
- *     `const { appender: append${getterName}, getSuffix: get${getterName} } = createJosaFunction('${whenTrue}', '${whenFalse}')`
+ *     `const { appender: append${getterName}, getSuffix: get${getterName} } = josaCompleters['${getterName}'] = createJosaFunction('${whenTrue}', '${whenFalse}')`
  *   )
  * )
  * gocog]]] */
 /***/
-const { appender: append은는, getSuffix: get은는 } = createJosaFunction('은', '는')
-const { appender: append을를, getSuffix: get을를 } = createJosaFunction('을', '를')
-const { appender: append이가, getSuffix: get이가 } = createJosaFunction('이', '가')
-const { appender: append와과, getSuffix: get와과 } = createJosaFunction('과', '와')
-const { appender: append야아, getSuffix: get야아 } = createJosaFunction('아', '야')
-const { appender: append이여, getSuffix: get이여 } = createJosaFunction('이여', '여')
-const { appender: append이나, getSuffix: get이나 } = createJosaFunction('이나', '나')
-const { appender: append이다, getSuffix: get이다 } = createJosaFunction('이다', '다')
-const { appender: append이였다, getSuffix: get이였다 } = createJosaFunction('이었다', '였다')
-const { appender: append이든, getSuffix: get이든 } = createJosaFunction('이든', '든')
-const { appender: append이라, getSuffix: get이라 } = createJosaFunction('이라', '라')
-const { appender: append이란, getSuffix: get이란 } = createJosaFunction('이란', '란')
-const { appender: append이랑, getSuffix: get이랑 } = createJosaFunction('이랑', '랑')
-const { appender: append이야, getSuffix: get이야 } = createJosaFunction('이야', '야')
-const { appender: append이며, getSuffix: get이며 } = createJosaFunction('이며', '며')
+const { appender: append은는, getSuffix: get은는 } = DEFAULT_JOSA_COMPLETERS['은는'] = createJosaFunction('은', '는')
+const { appender: append을를, getSuffix: get을를 } = DEFAULT_JOSA_COMPLETERS['을를'] = createJosaFunction('을', '를')
+const { appender: append이가, getSuffix: get이가 } = DEFAULT_JOSA_COMPLETERS['이가'] = createJosaFunction('이', '가')
+const { appender: append와과, getSuffix: get와과 } = DEFAULT_JOSA_COMPLETERS['와과'] = createJosaFunction('과', '와')
+const { appender: append야아, getSuffix: get야아 } = DEFAULT_JOSA_COMPLETERS['야아'] = createJosaFunction('아', '야')
+const { appender: append이여, getSuffix: get이여 } = DEFAULT_JOSA_COMPLETERS['이여'] = createJosaFunction('이여', '여')
+const { appender: append이나, getSuffix: get이나 } = DEFAULT_JOSA_COMPLETERS['이나'] = createJosaFunction('이나', '나')
+const { appender: append이다, getSuffix: get이다 } = DEFAULT_JOSA_COMPLETERS['이다'] = createJosaFunction('이다', '다')
+const { appender: append이였다, getSuffix: get이였다 } = DEFAULT_JOSA_COMPLETERS['이였다'] = createJosaFunction('이었다', '였다')
+const { appender: append이든, getSuffix: get이든 } = DEFAULT_JOSA_COMPLETERS['이든'] = createJosaFunction('이든', '든')
+const { appender: append이라, getSuffix: get이라 } = DEFAULT_JOSA_COMPLETERS['이라'] = createJosaFunction('이라', '라')
+const { appender: append이란, getSuffix: get이란 } = DEFAULT_JOSA_COMPLETERS['이란'] = createJosaFunction('이란', '란')
+const { appender: append이랑, getSuffix: get이랑 } = DEFAULT_JOSA_COMPLETERS['이랑'] = createJosaFunction('이랑', '랑')
+const { appender: append이야, getSuffix: get이야 } = DEFAULT_JOSA_COMPLETERS['이야'] = createJosaFunction('이야', '야')
+const { appender: append이며, getSuffix: get이며 } = DEFAULT_JOSA_COMPLETERS['이며'] = createJosaFunction('이며', '며')
 /* [[[end]]] */
-const { appender: append으로, getSuffix: get으로 } =
+const { appender: append으로, getSuffix: get으로 } = DEFAULT_JOSA_COMPLETERS['으로'] =
   createJosaFunction('으로', '로', (last) =>
     ![undefined, 'ㄹ', 'ᆯ'].includes(getJongseongOf(last))
   )
+Object.freeze(DEFAULT_JOSA_COMPLETERS)
 
 const addStringMethod = (key: string, getter: (value: string) => string): unknown =>
   // eslint-disable-next-line no-extend-native
   Object.defineProperty(String.prototype, key, {
     get() {
       return getter(this)
-    },
+    }
   })
 
 /**
@@ -217,3 +220,4 @@ export {
   get이며
   /* [[[end]]] */
 }
+export { autofix }
