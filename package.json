@@ -1,17 +1,17 @@
 {
   "name": "josa-complete",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "한국어 조사를 완성시켜줍니다",
   "main": "./dist/index.js",
   "devDependencies": {
-    "@types/node": "^14.0.27",
+    "@types/node": "^16.18.11",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "eslint": "^8.32.0",
     "eslint-config-standard-with-typescript": "^27.0.1",
     "eslint-plugin-import": "^2.27.4",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
-    "jest": "^26.0.1",
+    "jest": "^26.6.3",
     "jest-in-case": "^1.0.2",
     "typescript": "^4.9.4"
   },
