@@ -6,7 +6,11 @@ import { F, A, S, R } from './utils'
 const getWordsAndSpaces = (text: string): string[] =>
   text.match(/\p{White_Space}+|\P{White_Space}+/gu) ?? []
 
-const getPatterns = F.cached((whenTrue: string, whenFalse: string, unsafe: boolean = false): string[] => {
+const getPatterns = F.cached((
+  whenTrue: string,
+  whenFalse: string,
+  unsafe: boolean = false
+): string[] => {
   if (whenTrue === whenFalse) {
     throw new RangeError('whenTrue and whenFalse value must not be equal')
   }
@@ -62,12 +66,17 @@ export const autofix = (text: string): string => {
     const normalized = wordOrSpace.normalize('NFC') // '게임를'
     const foundIndex = josa.findIndex(({ whenTrue, whenFalse }) => {
       const patterns = getPatterns(whenTrue, whenFalse)
-      return normalized.match(new RegExp(`(${patterns.map(R.escape).join('|')})$`))
+      return normalized.match(
+        new RegExp(`(${patterns.map(R.escape).join('|')})$`)
+      )
     })
     if (foundIndex > -1) {
       const found = josa[foundIndex]
       const patterns = getPatterns(found.whenTrue, found.whenFalse)
-      const realWord = S.trimEnd(normalized, `(${patterns.map(R.escape).join('|')})`)
+      const realWord = S.trimEnd(
+        normalized,
+        `(${patterns.map(R.escape).join('|')})`
+      )
       return DEFAULT_JOSA_COMPLETERS[found.getterName].appender(realWord)
     }
 

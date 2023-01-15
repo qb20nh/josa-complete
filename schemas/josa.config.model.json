@@ -70,6 +70,22 @@
           "type": "boolean",
           "default": true,
           "description": "Whether if this josa completing case uses custom branching function, should define one manually in the code if set true"
+        },
+        "example": {
+          "type": "object",
+          "description": "Usage example for generating JSDoc",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Explanation of what it does"
+            },
+            "code": {
+              "type": "string",
+              "description": "Simple usage example code"
+            }
+          },
+          "required": ["description", "code"],
+          "additionalProperties": false
         }
       },
       "required": [

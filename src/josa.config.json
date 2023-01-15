@@ -14,12 +14,20 @@
     {
       "getterName": "은는",
       "whenTrue": "은",
-      "whenFalse": "는"
+      "whenFalse": "는",
+      "example": {
+        "description": "단어에 보조사 은/는 중 맞는 것을 붙여줍니다.",
+        "code": "'산'.은는 === '산은'\n'바다'.은는 === '바다는'"
+      }
     },
     {
       "getterName": "을를",
       "whenTrue": "을",
-      "whenFalse": "를"
+      "whenFalse": "를",
+      "example": {
+        "description": "단어에 대격조사 을/를 중 맞는 것을 붙여줍니다.",
+        "code": "'산'.을를 === '산을'\n'바다'.을를 === '바다를'"
+      }
     },
     {
       "getterName": "이가",

@@ -2,6 +2,7 @@
     "New codegen block": {
         "prefix": ["gocog"],
         "body": [
+            "/* eslint-disable multiline-comment-style */",
             "/**",
             "* @example",
             "* [[[gocog",
@@ -13,6 +14,7 @@
             "* )",
             "* gocog]]] */",
             "/***/",
+            "/* eslint-enable multiline-comment-style */",
             "// DO NOT ADD CONTENT HERE - GENERATED CODE WILL BE WRITTEN",
             "/* [[[end]]] */"
         ],

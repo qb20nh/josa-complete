@@ -10,33 +10,52 @@ import { autofix } from './autofixer'
 
 declare global {
   interface String {
+    /* eslint-disable multiline-comment-style */
     /**
      * @example
      * [[[gocog
      * require("./gen.cjs")(
      *   (josa) => josa.map(
-     *     ({getterName}) =>
-     *       `${getterName}: string`
+     *     ({getterName, example}) =>
+     *       `${example ? `/**
+     * * ${example.description}
+     * * @example
+     * * ${example.code.replace('\n', '\n* ')}
+     * *\/
+     * ` : ''}readonly ${getterName}: string`
      *   )
      * )
      * gocog]]] */
     /***/
-    은는: string
-    을를: string
-    이가: string
-    와과: string
-    으로: string
-    야아: string
-    이여: string
-    이나: string
-    이다: string
-    이였다: string
-    이든: string
-    이라: string
-    이란: string
-    이랑: string
-    이야: string
-    이며: string
+    /* eslint-enable multiline-comment-style */
+    /**
+     * 단어에 보조사 은/는 중 맞는 것을 붙여줍니다.
+     * @example
+     * '산'.은는 === '산은'
+     * '바다'.은는 === '바다는'
+     */
+    readonly 은는: string
+    /**
+     * 단어에 대격조사 을/를 중 맞는 것을 붙여줍니다.
+     * @example
+     * '산'.을를 === '산을'
+     * '바다'.을를 === '바다를'
+     */
+    readonly 을를: string
+    readonly 이가: string
+    readonly 와과: string
+    readonly 으로: string
+    readonly 야아: string
+    readonly 이여: string
+    readonly 이나: string
+    readonly 이다: string
+    readonly 이였다: string
+    readonly 이든: string
+    readonly 이라: string
+    readonly 이란: string
+    readonly 이랑: string
+    readonly 이야: string
+    readonly 이며: string
     /* [[[end]]] */
   }
 }
@@ -119,6 +138,7 @@ export const createJosaFunction = (
 
 export const DEFAULT_JOSA_COMPLETERS: Record<string, JosaCompleter> = {}
 // TODO(qb20nh): Generate JSDoc comment for each case with usage example
+/* eslint-disable multiline-comment-style */
 /**
  * @example
  * [[[gocog
@@ -126,11 +146,14 @@ export const DEFAULT_JOSA_COMPLETERS: Record<string, JosaCompleter> = {}
  *   (josa) => josa.filter(
  *     opt => !opt.usesCustomBranching
  *   ).map(({getterName, whenTrue, whenFalse}) =>
- *     `const { appender: append${getterName}, getSuffix: get${getterName} } = josaCompleters['${getterName}'] = createJosaFunction('${whenTrue}', '${whenFalse}')`
+ *     `const { appender: append${getterName}, getSuffix: get${getterName} }`
+ * + ` = DEFAULT_JOSA_COMPLETERS['${getterName}']`
+ * + ` = createJosaFunction('${whenTrue}', '${whenFalse}')`
  *   )
  * )
  * gocog]]] */
 /***/
+/* eslint-enable multiline-comment-style */
 const { appender: append은는, getSuffix: get은는 } = DEFAULT_JOSA_COMPLETERS['은는'] = createJosaFunction('은', '는')
 const { appender: append을를, getSuffix: get을를 } = DEFAULT_JOSA_COMPLETERS['을를'] = createJosaFunction('을', '를')
 const { appender: append이가, getSuffix: get이가 } = DEFAULT_JOSA_COMPLETERS['이가'] = createJosaFunction('이', '가')
@@ -156,11 +179,11 @@ Object.freeze(DEFAULT_JOSA_COMPLETERS)
 const addStringMethod = (key: string, getter: (value: string) => string): unknown =>
   // eslint-disable-next-line no-extend-native
   Object.defineProperty(String.prototype, key, {
-    get() {
+    get () {
       return getter(this)
     }
   })
-
+/* eslint-disable multiline-comment-style */
 /**
  * @example
  * [[[gocog
@@ -172,6 +195,7 @@ const addStringMethod = (key: string, getter: (value: string) => string): unknow
  * )
  * gocog]]] */
 /***/
+/* eslint-enable multiline-comment-style */
 addStringMethod('은는', append은는)
 addStringMethod('을를', append을를)
 addStringMethod('이가', append이가)
@@ -191,6 +215,7 @@ addStringMethod('이며', append이며)
 /* [[[end]]] */
 
 export {
+  /* eslint-disable multiline-comment-style */
   /**
    * @example
    * [[[gocog
@@ -202,6 +227,7 @@ export {
    * )
    * gocog]]] */
   /***/
+  /* eslint-enable multiline-comment-style */
   get은는,
   get을를,
   get이가,
