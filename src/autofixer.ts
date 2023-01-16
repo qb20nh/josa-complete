@@ -1,7 +1,7 @@
-
-import { DEFAULT_JOSA_COMPLETERS } from '.'
-import { josa } from './josa.config.json'
-import { F, A, S, R } from './utils'
+import { DEFAULT_JOSA_COMPLETERS } from '@/index'
+import { josa } from '@/josa.config.json'
+import { F, A, S, R } from '@/utils'
+import { JosaData } from '@/types'
 
 const getWordsAndSpaces = (text: string): string[] =>
   text.match(/\p{White_Space}+|\P{White_Space}+/gu) ?? []
@@ -52,7 +52,7 @@ const getPatterns = F.cached((
   ]
 })
 
-export const autofix = (text: string): string => {
+export const autofix = (text: string, josaData: JosaData[] = josa): string => {
   const wordsAndSpaces = getWordsAndSpaces(text)
   const indexToInclude =
     ((wordsAndSpaces[0]?.match(/\P{White_Space}/u)) != null)
@@ -64,14 +64,14 @@ export const autofix = (text: string): string => {
     }
 
     const normalized = wordOrSpace.normalize('NFC') // '게임를'
-    const foundIndex = josa.findIndex(({ whenTrue, whenFalse }) => {
+    const foundIndex = josaData.findIndex(({ whenTrue, whenFalse }) => {
       const patterns = getPatterns(whenTrue, whenFalse)
       return normalized.match(
         new RegExp(`(${patterns.map(R.escape).join('|')})$`)
       )
     })
     if (foundIndex > -1) {
-      const found = josa[foundIndex]
+      const found = josaData[foundIndex]
       const patterns = getPatterns(found.whenTrue, found.whenFalse)
       const realWord = S.trimEnd(
         normalized,

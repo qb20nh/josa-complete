@@ -1,18 +1,30 @@
 {
-  // Help: https://www.typescriptlang.org/tsconfig
   "include": ["src", "test"],
   "compilerOptions": {
     "target": "ES2019",
     "module": "commonjs",
     "declaration": true,
     "declarationMap": true,
+    "baseUrl": ".",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@@/*": ["test/*"],
+      "$/*": ["schemas/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "sourceMap": true,
+    "moduleResolution": "Node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true
   }
 }

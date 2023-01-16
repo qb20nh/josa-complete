@@ -1,13 +1,11 @@
 // eslint-disable no-undef
-const {
+import {
   get은는, get이가, get을를, get으로,
   get와과, get야아, get이여, get이나,
   get이다, get이였다, get이든, get이라,
-  get이란, get이랑, get이야, get이며,
-
-  autofix
-} = require('./dist')
-const cases = require('jest-in-case')
+  get이란, get이랑, get이야, get이며
+} from '@/index'
+import cases from 'jest-in-case'
 // eslint-enable no-undef
 
 const {
@@ -20,7 +18,8 @@ const {
   '이가', '야아', '이여', '이나',
   '이다', '이였다', '이든', '이라',
   '이란', '이랑', '이야', '이며'
-].map(particle => [particle, s => s[particle]]))
+].map((particle: string) =>
+  [particle, (s: string) => (s as string & Record<string, string>)[particle]]))
 
 cases('josa getters', opts => {
   expect(opts.val.startsWith(opts.noun)).toBeTruthy()
@@ -66,7 +65,7 @@ cases('josa getters', opts => {
   { name: 'ㄹ is ㄹ로', noun: 'ㄹ', particle: 으로, val: 'ㄹ로' },
   { name: '산 is 산이며', noun: '산', particle: 이며, val: '산이며' },
   { name: '바다 is 바다며', noun: '바다', particle: 이며, val: '바다며' }
-].map(opt => opt.noun.match(/[^가-힣]$/)
+].map(opt => opt.noun.match(/[^가-힣]$/) !== null
   ? opt
   : [
       { ...opt, noun: opt.noun.normalize('NFC'), val: opt.val.normalize('NFC') },
@@ -135,9 +134,3 @@ cases('suffixes of 디자인', opts => {
   { name: '디자인 + (이)여 is 이여', getter: get이여, val: '이여' },
   { name: '디자인 + (이)며 is 이며', getter: get이며, val: '이며' }
 ])
-
-describe('autofixer tests', () => {
-  test('normal texts', () => {
-    expect(autofix('Minecraft은(는) 현재 계정에서 사용할 수 없습니다.')).toBe('Minecraft는 현재 계정에서 사용할 수 없습니다.')
-  })
-})

@@ -18,7 +18,8 @@ module.exports = {
   },
   rules: {
     'multiline-comment-style': ['warn', 'starred-block'],
-    'space-before-function-parentheses': 'off'
+    '@typescript-eslint/space-before-function-paren': 'off',
+    'space-before-function-paren': 'off'
   },
   reportUnusedDisableDirectives: true,
   ignorePatterns: fs.readFileSync(

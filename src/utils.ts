@@ -22,8 +22,8 @@ export const A = {
     }
     return Array.isArray(value) ? value : [value]
   },
-  range (min: number, max: number): number[] {
-    return [...Array(max - min + 1)].map((_, i) => min + i)
+  range (from: number, to: number, step: number = 1): number[] {
+    return [...Array((to - from + 1) / step)].map((_, i) => from + i * step)
   }
 } as const
 
@@ -47,7 +47,7 @@ export const S = {
   hasNFDComposable (s: string): boolean {
     return s.normalize('NFC') !== s
   },
-  isMixed (s: string): boolean {
+  isMixedNormalizationForm (s: string): boolean {
     return S.hasNFCDecomposable(s) && S.hasNFDComposable(s)
   }
 } as const
